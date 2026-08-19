@@ -1,0 +1,1 @@
+I understood how to use a while loop,take user input validate whether it is a number,and use break/continue to control the loop.
