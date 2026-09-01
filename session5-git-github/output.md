@@ -17,7 +17,6 @@ However, `git commit -a -m` does not include newly created untracked files. New 
 
 ![Git commit](github.png)
 
-![Git commit -a](github2.png)
 
 ---
 
@@ -38,6 +37,7 @@ Instead of merging the entire branch, cherry-pick allows a particular commit to 
 In this task, I selected one commit from the new branch and successfully applied it to the `main` branch.
 
 ### Screenshots
+![Git commit -a](github2.png)
 
 ![Cherry-pick commit history](github3.png)
 
