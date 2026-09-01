@@ -1,6 +1,6 @@
-# Session 3 - Networking Commands
 ![alt text](image-1.png)
 ![alt text](image.png)
+# Session 3 - Networking Commands
 
 ## Task 1: Practice Networking Commands
 
