@@ -1,0 +1,9 @@
+services:
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx-bind
+    ports:
+      - "8084:80"
+    volumes:
+      - ./index.html:/usr/share/nginx/html/index.html

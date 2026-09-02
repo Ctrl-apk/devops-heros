@@ -1,0 +1,6 @@
+services:
+
+  apache:
+    image: httpd:2.4
+    container_name: apache-host
+    network_mode: host

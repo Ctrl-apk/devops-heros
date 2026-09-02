@@ -1,0 +1,39 @@
+services:
+
+  frontend:
+    image: nginx:alpine
+    container_name: frontend
+    networks:
+      - frontend_net
+    ports:
+      - "8081:80"
+
+  backend:
+    image: alpine:latest
+    container_name: backend
+    command: sh -c "apk add --no-cache curl && tail -f /dev/null"
+    networks:
+      - frontend_net
+      - backend_net
+
+  database:
+    image: mysql:8.0
+    container_name: database
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: appdb
+    networks:
+      - db_net
+    volumes:
+      - db_data:/var/lib/mysql
+
+networks:
+  frontend_net:
+    driver: bridge
+  backend_net:
+    driver: bridge
+  db_net:
+    driver: bridge
+
+volumes:
+  db_data:
