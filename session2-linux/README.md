@@ -61,8 +61,7 @@ cat hardlink.txt   # outputs: Hello
 cat softlink.txt   # Error: No such file or directory
 ```
 
-### Interview Tip
-> A hard link is another name for the same file (same inode). A soft link is just a pointer to a path — if the original is deleted, the soft link breaks.
+
 
 ---
 
@@ -284,8 +283,3 @@ dpkg -l | grep pkg          # Check if installed
 
 ---
 
-## Resources
-
-- [Linux Command Cheat Sheet](./Linux%20Networking%20Cheat%20Sheet.pdf)
-- [Basic Linux Guide](./basic-linux.pdf)
-- [Advanced Linux Guide](./ad-linux.pdf)
