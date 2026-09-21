@@ -33,6 +33,8 @@ kubectl exec -it curl-client -- curl web-service-clusterip:8080
 
 📸 screenshots/clusterip.png
 
+> *Screenshot to be added after running the commands*
+
 ---
 
 ## Task 2: NodePort
@@ -47,6 +49,8 @@ curl http://$(minikube ip):30080
 ```
 
 📸 screenshots/nodeport.png
+
+> *Screenshot to be added after running the commands*
 
 ---
 
@@ -64,6 +68,8 @@ kubectl get svc web-service-loadbalancer   # now shows EXTERNAL-IP
 
 📸 screenshots/loadbalancer.png
 
+> *Screenshot to be added after running the commands*
+
 ---
 
 ## Task 4: ExternalName
@@ -79,6 +85,8 @@ kubectl exec -it dns-test-client -- nslookup external-database-service
 ```
 
 📸 screenshots/externalname.png
+
+> *Screenshot to be added after running the commands*
 
 ---
 
@@ -115,6 +123,8 @@ Full FQDN format: `<service>.<namespace>.svc.cluster.local`
 
 📸 screenshots/fqdn-dns-test.png
 
+> *Screenshot to be added after running the commands*
+
 ---
 
 ## Task 7: Troubleshooting — Empty Endpoints
@@ -129,6 +139,8 @@ kubectl describe svc broken-backend-service
 **Fix:** Align `spec.selector` in the Service with `metadata.labels` in the Pod/Deployment.
 
 📸 screenshots/troubleshooting.png
+
+> *Screenshot to be added after running the commands*
 
 ---
 

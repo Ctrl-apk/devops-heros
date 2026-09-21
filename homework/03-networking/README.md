@@ -114,6 +114,8 @@ Modern replacement for `ifconfig`. Shows IP addresses, network interfaces, and r
 ![Networking Commands Output](../../session4-networking/image-1.png)
 ![Networking Commands Output 2](../../session4-networking/image.png)
 
+> Screenshots sourced from `session4-networking/`
+
 ---
 
 ## Resources

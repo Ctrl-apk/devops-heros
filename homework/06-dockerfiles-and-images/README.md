@@ -53,11 +53,11 @@ Open `http://localhost:8080` → **Hello World from Docker Multi-Stage Build!**
 
 ## Application Output
 
-![App Running](../../session6-7-docker/screenshots/ouput.png)
+![App Running](../../session6-7-docker/multi-stage-dockerfile/screenshots/ouput.png)
 
 ## docker ps Output
 
-![Docker PS](../../session6-7-docker/screenshots/docker%20ps.png)
+![Docker PS](../../session6-7-docker/multi-stage-dockerfile/screenshots/docker%20ps.png)
 
 ---
 

@@ -16,7 +16,7 @@ kubectl apply -f ../../session10-k8s-core-objects/daemonset/node-agent-ds.yaml
 kubectl get pods,rs,deployment,daemonset
 ```
 
-📸 screenshots/core-objects.png
+📸 ![core-objects](../../session10-k8s-core-objects/screenshots/core-objects.png)
 
 ---
 
@@ -38,7 +38,7 @@ kubectl get pods -w
 | CrashLoopBackOff | Container keeps crashing — exponential backoff |
 | ImagePullBackOff | Image doesn't exist or registry unreachable |
 
-📸 screenshots/pod-lifecycle.png
+📸 ![pod-lifecycle](../../session10-k8s-core-objects/screenshots/pod-lifecycle.png)
 
 ---
 
@@ -54,7 +54,7 @@ kubectl rollout history deployment/app-rolling
 kubectl rollout undo deployment/app-rolling
 ```
 
-📸 screenshots/rolling-update.png
+📸 ![rolling-update](../../session10-k8s-core-objects/screenshots/rolling-update.png)
 
 ---
 
@@ -69,7 +69,7 @@ kubectl apply -f ../../session10-k8s-core-objects/02-blue-green/service-green.ya
 kubectl describe svc myapp-service | grep Selector   # slot=green
 ```
 
-📸 screenshots/blue-green.png
+📸 ![blue-green](../../session10-k8s-core-objects/screenshots/blue-green.png)
 
 ---
 
@@ -84,7 +84,7 @@ kubectl scale deployment app-canary --replicas=3
 kubectl get pods --show-labels
 ```
 
-📸 screenshots/canary.png
+📸 ![canary](../../session10-k8s-core-objects/screenshots/canary.png)
 
 ---
 
@@ -97,7 +97,7 @@ kubectl get pods -l app=app-recreate -w
 # All v1 pods terminate BEFORE any v2 pod starts — brief downtime
 ```
 
-📸 screenshots/recreate.png
+📸 ![recreate](../../session10-k8s-core-objects/screenshots/recreate.png)
 
 ---
 
@@ -112,7 +112,7 @@ kubectl apply -f ../../session10-k8s-core-objects/troubleshooting/selector-misma
 kubectl get endpoints selector-error-demo             # empty
 ```
 
-📸 screenshots/troubleshooting.png
+📸 ![troubleshooting](../../session10-k8s-core-objects/screenshots/troubleshooting.png)
 
 ---
 
