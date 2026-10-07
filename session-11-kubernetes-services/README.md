@@ -37,6 +37,14 @@ Concept deep-dives: `service.md` (all 5 service types) and `fqdn.md` (CoreDNS/FQ
 
 ---
 
+## Overview
+
+Pods are ephemeral. When a Pod crashes, updates, or scales, it is replaced with a new Pod that receives a **brand-new, unpredictable IP address**. If microservices communicated by hardcoding Pod IPs, every restart would trigger a cascading outage.
+
+A **Kubernetes Service** provides a stable virtual IP address (ClusterIP) and a permanent DNS name that never changes, dynamically load-balancing traffic across all healthy backend Pods.
+
+---
+
 ## 1. ClusterIP
 
 ```bash
@@ -45,8 +53,6 @@ kubectl apply -f 01-clusterip/service.yaml
 kubectl apply -f 01-clusterip/client-pod.yaml
 kubectl exec -it curl-client -- curl web-service-clusterip:8080
 ```
-
-📸 screenshots/clusterip.png
 
 ---
 
@@ -59,8 +65,6 @@ kubectl get svc web-service-nodeport
 curl http://$(minikube ip):30080
 ```
 
-📸 screenshots/nodeport.png
-
 ---
 
 ## 3. LoadBalancer
@@ -72,8 +76,6 @@ kubectl get svc web-service-loadbalancer
 minikube tunnel        # run in a separate terminal to assign an EXTERNAL-IP
 ```
 
-📸 screenshots/loadbalancer.png
-
 ---
 
 ## 4. ExternalName
@@ -83,8 +85,6 @@ kubectl apply -f 04-externalname/service.yaml
 kubectl apply -f 04-externalname/client-pod.yaml
 kubectl exec -it dns-test-client -- nslookup external-database-service
 ```
-
-📸 screenshots/externalname.png
 
 ---
 
@@ -97,8 +97,6 @@ kubectl apply -f 05-headless/client-pod.yaml
 kubectl exec -it headless-dns-client -- nslookup web-service-headless
 ```
 
-📸 screenshots/headless.png — DNS returning multiple pod IPs instead of one VIP
-
 ---
 
 ## 6. FQDN / DNS Test
@@ -109,8 +107,6 @@ kubectl exec -it curl-test-pod -- cat /etc/resolv.conf
 kubectl exec -it curl-test-pod -- nslookup web-service-clusterip.default.svc.cluster.local
 ```
 
-📸 screenshots/fqdn-dns-test.png
-
 ---
 
 ## 7. Troubleshooting
@@ -119,27 +115,12 @@ kubectl exec -it curl-test-pod -- nslookup web-service-clusterip.default.svc.clu
 kubectl apply -f troubleshooting/empty-endpoints.yaml
 kubectl get endpoints broken-backend-service     # empty — selector matches no pod
 kubectl describe svc broken-backend-service
-```
-
-📸 screenshots/troubleshooting.png
-
----
-
-## Cleanup
-
-```bash
-kubectl delete -f 01-clusterip/service.yaml -f 01-clusterip/client-pod.yaml -f 01-clusterip/app-deployment.yaml
-kubectl delete -f 02-nodeport/service.yaml -f 02-nodeport/app-deployment.yaml
-kubectl delete -f 03-loadbalancer/service.yaml -f 03-loadbalancer/app-deployment.yaml
-kubectl delete -f 04-externalname/service.yaml -f 04-externalname/client-pod.yaml
-kubectl delete -f 05-headless/service.yaml -f 05-headless/client-pod.yaml -f 05-headless/app-statefulset.yaml
-kubectl delete -f dns-test/curl-test-pod.yaml
 kubectl delete -f troubleshooting/empty-endpoints.yaml
 ```
 
 ---
 
-## Resources
+## Resources & Revision
 
-- https://kubernetes.io/docs/concepts/services-networking/service/
-- https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/
+- [Kubernetes Service Documentation](https://kubernetes.io/docs/concepts/services-networking/service/)
+- [Kubernetes DNS Pod & Service](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/)

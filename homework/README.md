@@ -24,6 +24,14 @@ All homework from the DevOps Heroes sessions, one folder per topic.
 | 9 | Kubernetes Fundamentals | Session 9 | [09-k8s-fundamentals/README.md](./09-k8s-fundamentals/README.md) |
 | 10 | Kubernetes Pods, ReplicaSets & Deployments | Session 10 | [10-k8s-core-objects/README.md](./10-k8s-core-objects/README.md) |
 | 11 | Kubernetes Networking & Services | Session 11 | [11-k8s-services/README.md](./11-k8s-services/README.md) |
+| 12 | Kubernetes Storage, HPA & Probes | Session 13 | [12-k8s-storage-hpa-probes/README.md](./12-k8s-storage-hpa-probes/README.md) |
+| 13 | Kubernetes Troubleshooting | Session 14 | [13-k8s-troubleshooting/README.md](./13-k8s-troubleshooting/README.md) |
+| 14 | Helm Package Manager | Session 15 | [14-helm/README.md](./14-helm/README.md) |
+| 15 | CI/CD & GitHub Actions | Session 16 | [15-github-actions/README.md](./15-github-actions/README.md) |
+| 16 | Complete CI/CD & DevSecOps | Session 17 | [16-devsecops/README.md](./16-devsecops/README.md) |
+| 17 | Terraform & Infrastructure as Code | Session 18 | [17-terraform-iac/README.md](./17-terraform-iac/README.md) |
+| 18 | Cloud & Terraform in Action | Session 19 | [18-cloud-terraform/README.md](./18-cloud-terraform/README.md) |
+| 19 | Monitoring, Observability & GitOps | Session 20 | [19-monitoring-observability-gitops/README.md](./19-monitoring-observability-gitops/README.md) |
 
 ---
 
@@ -34,6 +42,8 @@ All homework from the DevOps Heroes sessions, one folder per topic.
 | Docker | 28.x |
 | minikube / Kubernetes | v1.39.0 / v1.37.0 (docker driver) |
 | kubectl | 1.36.3 |
+| Helm | 3.14+ |
+| Terraform | 1.5+ |
 | Node.js | 20 (alpine) |
 | Python | 3.12 |
 | Java | OpenJDK 21 |

@@ -6,6 +6,15 @@
 
 ---
 
+## 📌 Sub-Tasks & Deliverables
+
+- **Task 1:** 5 Service Types Hands-on (ClusterIP, NodePort, LoadBalancer, ExternalName, Headless)
+- **Task 2:** Kubernetes Object Comparison (Deployment vs ReplicaSet, Deployment vs DaemonSet vs StatefulSet, ReplicaSet vs Service)
+- **Task 3:** [FQDN Documentation](./fqdn/README.md)
+- **Task 4:** [CoreDNS Documentation](./coredns/README.md)
+
+---
+
 ## The 5 Service Types
 
 | Type | Scope | Use Case |
@@ -18,8 +27,9 @@
 
 ---
 
-## Task 1: ClusterIP
+## Task 1: 5 Service Types Hands-on
 
+### 1. ClusterIP
 Internal service — only reachable from within the cluster.
 
 ```bash
@@ -31,14 +41,7 @@ kubectl get endpoints web-service-clusterip
 kubectl exec -it curl-client -- curl web-service-clusterip:8080
 ```
 
-📸 screenshots/clusterip.png
-
-> *Screenshot to be added after running the commands*
-
----
-
-## Task 2: NodePort
-
+### 2. NodePort
 Opens a port on every node (30000–32767) for external access.
 
 ```bash
@@ -48,99 +51,76 @@ kubectl get svc web-service-nodeport
 curl http://$(minikube ip):30080
 ```
 
-📸 screenshots/nodeport.png
-
-> *Screenshot to be added after running the commands*
-
----
-
-## Task 3: LoadBalancer
-
+### 3. LoadBalancer
 Cloud provider assigns an external IP. `minikube tunnel` simulates this locally.
 
 ```bash
 kubectl apply -f ../../session-11-kubernetes-services/03-loadbalancer/app-deployment.yaml
 kubectl apply -f ../../session-11-kubernetes-services/03-loadbalancer/service.yaml
-kubectl get svc web-service-loadbalancer   # shows <pending> without tunnel
-minikube tunnel                            # run in separate terminal
-kubectl get svc web-service-loadbalancer   # now shows EXTERNAL-IP
+kubectl get svc web-service-loadbalancer
+minikube tunnel
 ```
 
-📸 screenshots/loadbalancer.png
-
-> *Screenshot to be added after running the commands*
-
----
-
-## Task 4: ExternalName
-
+### 4. ExternalName
 Pure DNS CNAME alias — no endpoints, no cluster IP. Routes to external domain.
 
 ```bash
 kubectl apply -f ../../session-11-kubernetes-services/04-externalname/service.yaml
 kubectl apply -f ../../session-11-kubernetes-services/04-externalname/client-pod.yaml
-kubectl get svc external-database-service   # CLUSTER-IP: <none>
+kubectl get svc external-database-service
 kubectl exec -it dns-test-client -- nslookup external-database-service
-# Returns: canonical name = <external-domain>
 ```
 
-📸 screenshots/externalname.png
-
-> *Screenshot to be added after running the commands*
-
----
-
-## Task 5: Headless Service
-
+### 5. Headless Service
 `clusterIP: None` — CoreDNS returns all pod IPs directly instead of a single VIP. Used with StatefulSets.
 
 ```bash
 kubectl apply -f ../../session-11-kubernetes-services/05-headless/service.yaml
 kubectl apply -f ../../session-11-kubernetes-services/05-headless/app-statefulset.yaml
 kubectl apply -f ../../session-11-kubernetes-services/05-headless/client-pod.yaml
-kubectl get svc web-service-headless   # CLUSTER-IP: None
+kubectl get svc web-service-headless
 kubectl exec -it headless-dns-client -- nslookup web-service-headless
-# Returns 3 separate A records (one per pod IP)
-kubectl exec -it headless-dns-client -- curl web-stateful-0.web-service-headless:80
 ```
-
-📸 screenshots/headless.png
 
 ---
 
-## Task 6: FQDN / CoreDNS
+## Task 2: Kubernetes Object Comparison
 
-```bash
-kubectl exec -it curl-test-pod -- cat /etc/resolv.conf
-# nameserver 10.96.0.10
-# search default.svc.cluster.local svc.cluster.local cluster.local
-# options ndots:5
+### 1. Deployment vs ReplicaSet
 
-kubectl exec -it curl-test-pod -- nslookup web-service-clusterip.default.svc.cluster.local
-```
+| Feature | ReplicaSet | Deployment |
+|---|---|---|
+| **Purpose** | Ensures a fixed number of identical Pods are running at any given time | Higher-level abstraction managing ReplicaSets declaratively with rolling updates & rollbacks |
+| **Pod Management** | Manages raw Pod instances based on label selectors | Manages underlying ReplicaSets (creates new RS and scales down old RS during updates) |
+| **Scaling** | Supports manual scaling (`kubectl scale rs ...`) | Supports manual and automatic scaling (via HPA) |
+| **Rolling Updates** | ❌ No native support (must delete Pods manually) | ✅ Native rolling updates and rollback support (`kubectl rollout undo`) |
+| **Relationship** | Direct owner of Pods | Deployment owns and manages ReplicaSets; ReplicaSet owns Pods |
 
-Full FQDN format: `<service>.<namespace>.svc.cluster.local`
+### 2. Deployment vs DaemonSet vs StatefulSet
 
-📸 screenshots/fqdn-dns-test.png
+| Dimension | Deployment | DaemonSet | StatefulSet |
+|---|---|---|---|
+| **Use Cases** | Stateless microservices, web apps | Node agents, log collectors (Fluentd), monitoring agents (Prometheus Node Exporter) | Stateful applications (Databases, Kafka, Redis, ZooKeeper) |
+| **Pod Creation** | Randomly named pods (`web-7f89d-x9q4t`) | Exactly 1 pod per node automatically | Deterministic, ordinal pod names (`db-0`, `db-1`, `db-2`) |
+| **Scaling** | Arbitrary replica count across cluster | Scales dynamically with node count (1 per node) | Sequential, ordered scaling (0 → 1 → 2) |
+| **Networking** | Shared ClusterIP/Service VIP | Node-level network access | Unique per-pod network identity via Headless Service |
+| **Storage** | Ephemeral or shared volume | Node-local hostPath storage | Dedicated, persistent per-pod volume claims (`volumeClaimTemplates`) |
+| **Examples** | `nginx`, `flask-api`, `react-ui` | `kube-proxy`, `calico-node`, `promtail` | `postgres`, `mongodb-cluster`, `elastic-node-0` |
 
-> *Screenshot to be added after running the commands*
+### 3. ReplicaSet vs Service
+
+| Dimension | ReplicaSet | Service |
+|---|---|---|
+| **Responsibility** | Maintains desired Pod replica count & pod health lifecycle | Provides stable networking entry point (VIP/DNS) and load-balancing |
+| **Why Required?** | Prevents pod outages by recreating crashed/terminated pods | Decouples volatile pod IPs from client microservices |
+| **Traffic Flow** | Does NOT route or load-balance traffic | Intercepts traffic at virtual IP/Port and forwards to healthy pod IPs matching selector |
 
 ---
 
-## Task 7: Troubleshooting — Empty Endpoints
+## Task 3 & 4 Summary
 
-```bash
-kubectl apply -f ../../session-11-kubernetes-services/troubleshooting/empty-endpoints.yaml
-kubectl get endpoints broken-backend-service   # empty — selector matches no pod
-kubectl describe svc broken-backend-service
-```
-
-**Cause:** Service selector label doesn't match any pod label.
-**Fix:** Align `spec.selector` in the Service with `metadata.labels` in the Pod/Deployment.
-
-📸 screenshots/troubleshooting.png
-
-> *Screenshot to be added after running the commands*
+- **FQDN Details:** Documented in [fqdn/README.md](./fqdn/README.md)
+- **CoreDNS Details:** Documented in [coredns/README.md](./coredns/README.md)
 
 ---
 
