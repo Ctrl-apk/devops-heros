@@ -1,0 +1,9 @@
+apiVersion: v2
+name: final-devops-chart
+description: Complete Helm Chart for Final DevOps End-to-End Application
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+maintainers:
+  - name: Shifa
+    email: shifa.24bcs10354@sst.scaler.com

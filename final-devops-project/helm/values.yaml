@@ -1,0 +1,39 @@
+replicaCount: 3
+
+image:
+  repository: ghcr.io/ctrl-apk/devops-app
+  pullPolicy: IfNotPresent
+  tag: "1.0.0"
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 5000
+
+ingress:
+  enabled: true
+  className: nginx
+  host: devops-app.local
+
+hpa:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 300m
+    memory: 256Mi
+
+env:
+  APP_ENV: production
+  PORT: "5000"
+  LOG_LEVEL: INFO
+
+secret:
+  DATABASE_URL: cG9zdGdyZXNxbDovL2FwcHVzZXI6U2VjdXJlUGFzc3dvcmQxMjMhQHBvc3RncmVzLWRiOjU0MzIvZmluYWxkYg==
+  API_KEY: ZGV2b3BzLXNlY3JldC1rZXktOTk4ODc3

@@ -1,0 +1,14 @@
+# Intentionally Broken Service
+# Issue 3: Selector Label Mismatch (Empty Endpoints)
+apiVersion: v1
+kind: Service
+metadata:
+  name: broken-devops-service
+  namespace: final-devops
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 5000
+  selector:
+    app: wrong-label-selector-name # Mismatch against deployment label 'broken-app'

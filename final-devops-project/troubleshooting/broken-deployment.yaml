@@ -1,0 +1,29 @@
+# Intentionally Broken Deployment
+# Issue 1: Invalid Container Image Tag (ImagePullBackOff)
+# Issue 2: Incorrect Container Port Mapping (Health Check Failure / CrashLoop)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: broken-devops-app
+  namespace: final-devops
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: broken-app
+  template:
+    metadata:
+      labels:
+        app: broken-app
+    spec:
+      containers:
+      - name: broken-app
+        image: ghcr.io/ctrl-apk/devops-app:nonexistent-tag-9999
+        ports:
+        - containerPort: 9090 # Wrong port, app listens on 5000
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 9090 # Will fail connect timeout
+          initialDelaySeconds: 2
+          periodSeconds: 2
