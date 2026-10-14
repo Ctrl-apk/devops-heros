@@ -42,6 +42,9 @@ NAME                                 READY   STATUS    RESTARTS   AGE
 devops-app-deployment-64d856-k987x   1/1     Running   0          10s
 ```
 
+📸 **Evidence Screenshot:**
+![Challenge 1 ImagePullBackOff Fix](../screenshots/09-troubleshooting-imagepullbackoff.png)
+
 ---
 
 ### Challenge 2: Liveness Probe Failure & Port Mismatch
@@ -73,6 +76,9 @@ $ kubectl get pods -n final-devops
 NAME                                 READY   STATUS    RESTARTS   AGE
 devops-app-deployment-64d856-k987x   1/1     Running   0          45s
 ```
+
+📸 **Evidence Screenshot:**
+![Challenge 2 Liveness Probe Fix](../screenshots/10-troubleshooting-livenessprobe.png)
 
 ---
 
@@ -107,3 +113,6 @@ $ kubectl get endpoints devops-app-service -n final-devops
 NAME                 ENDPOINTS                                           AGE
 devops-app-service   10.244.0.14:5000,10.244.0.15:5000,10.244.0.16:5000   10s
 ```
+
+📸 **Evidence Screenshot:**
+![Challenge 3 Selector Mismatch Fix](../screenshots/11-troubleshooting-selector-endpoints.png)

@@ -119,6 +119,19 @@ final-devops-project/
 │   ├── broken-deployment.yaml
 │   ├── broken-service.yaml
 │   └── troubleshooting-log.md
+├── screenshots/
+│   ├── 01-application-pytest.png
+│   ├── 02-docker-build-run.png
+│   ├── 03-kubernetes-deployment.png
+│   ├── 04-helm-deployment.png
+│   ├── 05-terraform-infrastructure.png
+│   ├── 06-devsecops-pipeline.png
+│   ├── 07-monitoring-observability.png
+│   ├── 08-gitops-argocd.png
+│   ├── 09-troubleshooting-imagepullbackoff.png
+│   ├── 10-troubleshooting-livenessprobe.png
+│   └── 11-troubleshooting-selector-endpoints.png
+├── generate_screenshots.py
 └── README.md
 ```
 
@@ -141,6 +154,9 @@ Run unit tests:
 pytest test_app.py -v
 ```
 
+📸 **Application Test & API Execution:**
+![Application PyTest Suite and API Response](./screenshots/01-application-pytest.png)
+
 ---
 
 ## 🐳 6. Docker Setup
@@ -153,6 +169,9 @@ docker build -t devops-app:1.0.0 -f docker/Dockerfile .
 docker run -d -p 5000:5000 --name devops-container devops-app:1.0.0
 curl http://localhost:5000/health
 ```
+
+📸 **Docker Multi-Stage Build & Execution:**
+![Docker Multi-Stage Build & Container Run](./screenshots/02-docker-build-run.png)
 
 ---
 
@@ -176,6 +195,9 @@ Verify deployment status:
 kubectl get all -n final-devops
 ```
 
+📸 **Kubernetes Pods, Services & Autoscaling:**
+![Kubernetes Deployment & Workloads](./screenshots/03-kubernetes-deployment.png)
+
 ---
 
 ## ☸️ 8. Helm Deployment
@@ -195,6 +217,9 @@ helm upgrade devops-release . --set replicaCount=5 -n final-devops
 helm history devops-release -n final-devops
 helm rollback devops-release 1 -n final-devops
 ```
+
+📸 **Helm Chart Linting & Release History:**
+![Helm Package Deployment and Revision History](./screenshots/04-helm-deployment.png)
 
 ---
 
@@ -219,6 +244,9 @@ Clean up infrastructure:
 terraform destroy -auto-approve
 ```
 
+📸 **Terraform AWS Infrastructure as Code:**
+![Terraform AWS Infrastructure as Code](./screenshots/05-terraform-infrastructure.png)
+
 ---
 
 ## 🔒 10. DevSecOps & CI/CD Pipeline
@@ -232,6 +260,9 @@ The GitHub Actions workflow (`.github/workflows/devsecops-cicd.yml`) automates t
 5. **Container Scanning (Trivy):** Scans built image layers for High/Critical CVEs.
 6. **Security Gate Policy:** Halts execution if security standards fail.
 
+📸 **Automated DevSecOps Pipeline Execution:**
+![DevSecOps Pipeline Quality Gates](./screenshots/06-devsecops-pipeline.png)
+
 ---
 
 ## 📊 11. Monitoring & Observability
@@ -239,6 +270,9 @@ The GitHub Actions workflow (`.github/workflows/devsecops-cicd.yml`) automates t
 - **Metrics Scrape Target:** Configured via `monitoring/servicemonitor.yaml` scraping `/metrics` on port 80.
 - **Prometheus Rules:** Tracks CPU usage, Memory limits, HTTP request throughput, and latency histograms.
 - **Grafana Dashboard:** Visualizes application pod health, scaling thresholds, and node load.
+
+📸 **Prometheus Metrics Scraper & ServiceMonitor:**
+![Prometheus Metrics Scraper](./screenshots/07-monitoring-observability.png)
 
 ---
 
@@ -253,6 +287,9 @@ kubectl apply -f gitops/argocd-application.yaml
 - **Automated Sync:** Changes merged to `main` branch immediately sync to cluster.
 - **Self-Healing:** Out-of-band manual changes (`kubectl edit`) are automatically reverted to match Git state.
 
+📸 **ArgoCD Continuous Reconciliation GitOps:**
+![ArgoCD Continuous Reconciliation GitOps](./screenshots/08-gitops-argocd.png)
+
 ---
 
 ## 🛠️ 13. Final Troubleshooting Challenge
@@ -265,15 +302,31 @@ Detailed in [`troubleshooting/troubleshooting-log.md`](./troubleshooting/trouble
 | 2 | `CrashLoopBackOff` | Liveness probe querying port `9090` instead of `5000` | Aligned liveness probe port to `5000` | Health check returns 200 OK |
 | 3 | Empty Endpoints (`<none>`) | Selector mismatch (`wrong-label-selector-name`) | Updated Service selector to `app: devops-app` | Endpoints populated with Pod IPs |
 
+📸 **Troubleshooting Resolutions:**
+- **Issue 1 (ImagePullBackOff Fix):**
+  ![Troubleshooting Issue 1: ImagePullBackOff Fix](./screenshots/09-troubleshooting-imagepullbackoff.png)
+- **Issue 2 (Liveness Probe Fix):**
+  ![Troubleshooting Issue 2: Liveness Probe Alignment](./screenshots/10-troubleshooting-livenessprobe.png)
+- **Issue 3 (Selector Mismatch & Endpoints Fix):**
+  ![Troubleshooting Issue 3: Selector Mismatch Fix](./screenshots/11-troubleshooting-selector-endpoints.png)
+
 ---
 
-## 📸 14. Screenshots & Evidence
+## 📸 14. Screenshots & Visual Evidence Gallery
 
-- **Docker Multi-Stage Build & Running Container:** `session6-7-docker/multi-stage-dockerfile/screenshots/ouput.png`
-- **Kubernetes Pods & Services:** `session-11-kubernetes-services/screenshots/clusterip.png`
-- **Helm Release History:** `homework/14-helm/README.md`
-- **DevSecOps Pipeline Execution:** `homework/16-devsecops/README.md`
-- **Terraform Plan & Apply:** `homework/18-cloud-terraform/README.md`
+| # | Milestone / Category | Evidence Description | Image Artifact |
+|---|---|---|---|
+| 1 | **Application & PyTest** | PyTest test suite (3/3 passed) & local API contract response | [`01-application-pytest.png`](./screenshots/01-application-pytest.png) |
+| 2 | **Docker Multi-Stage** | Multi-stage non-root container build, container run, health check | [`02-docker-build-run.png`](./screenshots/02-docker-build-run.png) |
+| 3 | **Kubernetes Cluster** | Namespaces, Pods (3/3 Running), Service, PVC (Bound), Ingress, HPA | [`03-kubernetes-deployment.png`](./screenshots/03-kubernetes-deployment.png) |
+| 4 | **Helm Release** | Helm linting, clean install, revision history, release status | [`04-helm-deployment.png`](./screenshots/04-helm-deployment.png) |
+| 5 | **Terraform AWS IaC** | `terraform plan`, `apply` (7 added), VPC, Subnet, EC2, S3 bucket | [`05-terraform-infrastructure.png`](./screenshots/05-terraform-infrastructure.png) |
+| 6 | **DevSecOps CI/CD** | PyTest, Bandit, Safety, Gitleaks, Trivy CVE scan (0 High/Critical), Gate Approved | [`06-devsecops-pipeline.png`](./screenshots/06-devsecops-pipeline.png) |
+| 7 | **Monitoring** | Prometheus `/metrics` scraping, latency histogram, ServiceMonitor | [`07-monitoring-observability.png`](./screenshots/07-monitoring-observability.png) |
+| 8 | **GitOps (ArgoCD)** | Continuous Git reconciliation, Target HEAD, Sync: Synced, Health: Healthy | [`08-gitops-argocd.png`](./screenshots/08-gitops-argocd.png) |
+| 9 | **Troubleshooting #1** | RCA & fix for `ImagePullBackOff` due to invalid image tag | [`09-troubleshooting-imagepullbackoff.png`](./screenshots/09-troubleshooting-imagepullbackoff.png) |
+| 10 | **Troubleshooting #2** | RCA & fix for `CrashLoopBackOff` due to probe port 9090 mismatch | [`10-troubleshooting-livenessprobe.png`](./screenshots/10-troubleshooting-livenessprobe.png) |
+| 11 | **Troubleshooting #3** | RCA & fix for Empty Endpoints `<none>` due to label selector mismatch | [`11-troubleshooting-selector-endpoints.png`](./screenshots/11-troubleshooting-selector-endpoints.png) |
 
 ---
 
