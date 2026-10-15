@@ -1,24 +1,29 @@
+output "cluster_name" {
+  description = "EKS Cluster Name"
+  value       = module.eks.cluster_name
+}
+
+output "cluster_endpoint" {
+  description = "EKS Cluster Kubernetes API Endpoint"
+  value       = module.eks.cluster_endpoint
+}
+
 output "vpc_id" {
-  description = "VPC ID"
-  value       = aws_vpc.main.id
+  description = "VPC ID where EKS is provisioned"
+  value       = module.vpc.vpc_id
 }
 
-output "public_subnet_id" {
-  description = "Public Subnet ID"
-  value       = aws_subnet.public.id
+output "public_subnets" {
+  description = "Public subnet IDs"
+  value       = module.vpc.public_subnets
 }
 
-output "security_group_id" {
-  description = "Security Group ID"
-  value       = aws_security_group.web_sg.id
+output "private_subnets" {
+  description = "Private subnet IDs used for EKS worker nodes"
+  value       = module.vpc.private_subnets
 }
 
-output "ec2_public_ip" {
-  description = "EC2 Public IP Address"
-  value       = aws_instance.web_server.public_ip
-}
-
-output "s3_bucket_name" {
-  description = "S3 Bucket Name"
-  value       = aws_s3_bucket.artifacts.id
+output "configure_kubectl" {
+  description = "Command to update local kubeconfig for the provisioned EKS cluster"
+  value       = "aws eks --region ${var.aws_region} update-kubeconfig --name ${module.eks.cluster_name}"
 }

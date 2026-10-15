@@ -1,29 +1,23 @@
 variable "aws_region" {
-  description = "AWS Region for deployment"
+  description = "AWS region for infrastructure provisioning"
   type        = string
-  default     = "us-east-1"
+  default     = "ap-south-1"
+}
+
+variable "cluster_name" {
+  description = "Name of the Amazon EKS cluster"
+  type        = string
+  default     = "taskboard-eks"
 }
 
 variable "environment" {
-  description = "Deployment environment"
+  description = "Target environment (e.g. dev, staging, prod)"
   type        = string
-  default     = "production"
+  default     = "dev"
 }
 
 variable "vpc_cidr" {
-  description = "CIDR block for VPC"
+  description = "CIDR block for the TaskBoard VPC"
   type        = string
-  default     = "10.0.0.0/16"
-}
-
-variable "public_subnet_cidr" {
-  description = "CIDR block for public subnet"
-  type        = string
-  default     = "10.0.1.0/24"
-}
-
-variable "instance_type" {
-  description = "EC2 instance type"
-  type        = string
-  default     = "t3.micro"
+  default     = "10.20.0.0/16"
 }

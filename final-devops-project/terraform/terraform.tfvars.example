@@ -1,0 +1,8 @@
+# Example configuration values for TaskBoard AWS EKS infrastructure
+# Copy to terraform.tfvars and customize as needed:
+# cp terraform.tfvars.example terraform.tfvars
+
+aws_region   = "ap-south-1"
+cluster_name = "taskboard-eks"
+environment  = "dev"
+vpc_cidr     = "10.20.0.0/16"

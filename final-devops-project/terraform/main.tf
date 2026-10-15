@@ -1,130 +1,50 @@
-# VPC
-resource "aws_vpc" "main" {
-  cidr_block           = var.vpc_cidr
+module "vpc" {
+  source  = "terraform-aws-modules/vpc/aws"
+  version = "5.8.1"
+
+  name = "taskboard-vpc"
+  cidr = var.vpc_cidr
+
+  azs             = ["${var.aws_region}a", "${var.aws_region}b"]
+  private_subnets = ["10.20.1.0/24", "10.20.2.0/24"]
+  public_subnets  = ["10.20.101.0/24", "10.20.102.0/24"]
+
+  enable_nat_gateway = true
+  single_nat_gateway = true
+
   enable_dns_hostnames = true
   enable_dns_support   = true
 
   tags = {
-    Name        = "final-devops-vpc"
     Environment = var.environment
+    Project     = "TaskBoard"
   }
 }
 
-# Public Subnet
-resource "aws_subnet" "public" {
-  vpc_id                  = aws_vpc.main.id
-  cidr_block              = var.public_subnet_cidr
-  map_public_ip_on_launch = true
-  availability_zone       = "${var.aws_region}a"
+module "eks" {
+  source  = "terraform-aws-modules/eks/aws"
+  version = "20.37.1"
 
-  tags = {
-    Name        = "final-devops-public-subnet"
-    Environment = var.environment
-  }
-}
+  cluster_name    = var.cluster_name
+  cluster_version = "1.31"
 
-# Internet Gateway
-resource "aws_internet_gateway" "gw" {
-  vpc_id = aws_vpc.main.id
+  vpc_id     = module.vpc.vpc_id
+  subnet_ids = module.vpc.private_subnets
 
-  tags = {
-    Name        = "final-devops-igw"
-    Environment = var.environment
-  }
-}
+  cluster_endpoint_public_access           = true
+  enable_cluster_creator_admin_permissions = true
 
-# Route Table
-resource "aws_route_table" "public" {
-  vpc_id = aws_vpc.main.id
-
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.gw.id
+  eks_managed_node_groups = {
+    main = {
+      instance_types = ["t3.medium"]
+      min_size       = 2
+      max_size       = 4
+      desired_size   = 2
+    }
   }
 
   tags = {
-    Name        = "final-devops-public-rt"
     Environment = var.environment
-  }
-}
-
-resource "aws_route_table_association" "public" {
-  subnet_id      = aws_subnet.public.id
-  route_table_id = aws_route_table.public.id
-}
-
-# Security Group
-resource "aws_security_group" "web_sg" {
-  name        = "final-devops-web-sg"
-  description = "Security group for web server and SSH"
-  vpc_id      = aws_vpc.main.id
-
-  ingress {
-    description = "HTTP Inbound"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    description = "HTTPS Inbound"
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    description = "SSH Inbound"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    description = "Allow all outbound"
-    from_port   = 0
-    to_port     = 0
-    protocol    ="-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name        = "final-devops-web-sg"
-    Environment = var.environment
-  }
-}
-
-# EC2 Instance
-resource "aws_instance" "web_server" {
-  ami                    = "ami-0c7217cdde317cfec" # Ubuntu 22.04 LTS (us-east-1)
-  instance_type          = var.instance_type
-  subnet_id              = aws_subnet.public.id
-  vpc_security_group_ids = [aws_security_group.web_sg.id]
-
-  user_data = <<-EOF
-              #!/bin/bash
-              apt-get update -y
-              apt-get install -y docker.io
-              systemctl start docker
-              systemctl enable docker
-              EOF
-
-  tags = {
-    Name        = "final-devops-ec2-node"
-    Environment = var.environment
-  }
-}
-
-# S3 Bucket for Storage
-resource "aws_s3_bucket" "artifacts" {
-  bucket        = "final-devops-artifacts-storage-24bcs10354"
-  force_destroy = true
-
-  tags = {
-    Name        = "final-devops-s3-artifacts"
-    Environment = var.environment
+    Project     = "TaskBoard"
   }
 }
