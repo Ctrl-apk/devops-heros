@@ -185,6 +185,9 @@ python -m pytest -v
 10. `test_task_stats`: Verifies real-time count aggregation.
 11. `test_delete_task`: Verifies deletion (`204`) and confirms subsequent `404`.
 
+📸 **Application PyTest Suite & API Contract Validation:**
+![Application PyTest Suite and API Response](./screenshots/01-application-pytest.png)
+
 ---
 
 ## 🐳 5. Containerization & Local Stack (Module M4)
@@ -208,6 +211,9 @@ Stop the stack:
 ```bash
 docker compose down -v
 ```
+
+📸 **Docker Multi-Stage Build & Local Compose Stack:**
+![Docker Multi-Stage Build and Local Compose Stack](./screenshots/02-docker-build-run.png)
 
 ---
 
@@ -239,6 +245,9 @@ The automated GitHub Actions workflow [.github/workflows/ci-cd.yml](file:///c:/U
 ### DevSecOps Trivy Explanation:
 Trivy scans both application containers at the OS layer (`Alpine`, `Debian-slim`) and language package layer (`npm`, `pip`). Using `exit-code: '1'` ensures that any unpatched **HIGH** or **CRITICAL** CVE halts the pipeline before vulnerable artifacts reach the registry.
 
+📸 **Automated DevSecOps Pipeline & Security Quality Gate:**
+![Automated DevSecOps Pipeline and Security Gate](./screenshots/06-devsecops-pipeline.png)
+
 ---
 
 ## ☁️ 7. Infrastructure as Code (Module M7)
@@ -266,6 +275,9 @@ aws eks --region ap-south-1 update-kubeconfig --name taskboard-eks
 terraform destroy
 ```
 
+📸 **Terraform AWS VPC & Amazon EKS Infrastructure as Code:**
+![Terraform AWS Infrastructure as Code](./screenshots/05-terraform-infrastructure.png)
+
 ---
 
 ## ☸️ 8. Kubernetes & Helm Deployment (Module M8)
@@ -289,6 +301,12 @@ helm upgrade --install taskboard ./helm/taskboard \
 * **Ingress:** Routes `/` to frontend service and `/api` to backend service.
 * **HPA:** Scales backend from 2 to 6 replicas when CPU exceeds 60%.
 
+📸 **Kubernetes Cluster Workloads & Ingress Routing:**
+![Kubernetes Deployment & Workloads](./screenshots/03-kubernetes-deployment.png)
+
+📸 **Helm Packaging, Release Lifecycle & History:**
+![Helm Package Deployment and Revision History](./screenshots/04-helm-deployment.png)
+
 ---
 
 ## 📈 9. Observability: Prometheus & Grafana (Module M9)
@@ -311,6 +329,9 @@ The pre-configured Grafana dashboard in [monitoring/grafana-dashboard.json](file
 4. **Pod CPU & Memory Utilization:** Resource consumption across worker nodes.
 5. **HPA Replicas:** Live scaling reactions during traffic spikes.
 
+📸 **Prometheus Metrics Collection & Observability:**
+![Prometheus Metrics Scraper and ServiceMonitor](./screenshots/07-monitoring-observability.png)
+
 ---
 
 ## 🛠️ 10. Troubleshooting Exercises (Module M10)
@@ -319,9 +340,46 @@ Refer to [troubleshooting/README.md](file:///c:/Users/ASUS/Desktop/devops-heros/
 * **Exercise 1: ImagePullBackOff:** Debug missing or invalid container tags via `kubectl describe pod` and events.
 * **Exercise 2: Broken Service Routing:** Diagnose empty endpoint lists caused by label selector mismatches (`kubectl get ep`).
 
+📸 **Troubleshooting Incident Resolutions:**
+- **Lab 1 (ImagePullBackOff Remediation):**
+  ![Troubleshooting Issue 1: ImagePullBackOff Fix](./screenshots/09-troubleshooting-imagepullbackoff.png)
+- **Lab 2 (Liveness Probe Port Alignment):**
+  ![Troubleshooting Issue 2: Liveness Probe Alignment](./screenshots/10-troubleshooting-livenessprobe.png)
+- **Lab 3 (Selector Mismatch & Endpoints Fix):**
+  ![Troubleshooting Issue 3: Selector Mismatch Fix](./screenshots/11-troubleshooting-selector-endpoints.png)
+
 ---
 
-## 💯 Grading Rubric Self-Assessment (100 / 100 Points)
+## 🔄 11. GitOps with ArgoCD
+
+ArgoCD continuously reconciles cluster state against the Git repository:
+* **Automated Sync:** Changes pushed to `main` branch automatically synchronize to the `taskboard` namespace.
+* **Self-Healing:** Out-of-band manual changes are automatically reverted to match Git state.
+
+📸 **ArgoCD Continuous GitOps Reconciliation:**
+![ArgoCD Continuous Reconciliation GitOps](./screenshots/08-gitops-argocd.png)
+
+---
+
+## 📸 12. Screenshots & Visual Evidence Gallery
+
+| # | Milestone / Category | Evidence Description | Image Artifact |
+|---|---|---|---|
+| 1 | **Application & PyTest** | PyTest test suite (11/11 passed) & `/health`, `/api/tasks/stats` response | [`01-application-pytest.png`](./screenshots/01-application-pytest.png) |
+| 2 | **Docker Multi-Stage & Compose** | Non-root backend & frontend container build, `docker compose ps` | [`02-docker-build-run.png`](./screenshots/02-docker-build-run.png) |
+| 3 | **Kubernetes Cluster** | Workloads (Backend 2/2, Frontend 2/2, Postgres 1/1), Ingress, PVC, HPA | [`03-kubernetes-deployment.png`](./screenshots/03-kubernetes-deployment.png) |
+| 4 | **Helm Release** | Helm linting (`helm lint ./helm/taskboard`), upgrade install, revision history | [`04-helm-deployment.png`](./screenshots/04-helm-deployment.png) |
+| 5 | **Terraform AWS IaC** | `terraform plan`, `apply` (21 added), VPC, 4 subnets, NAT GW, EKS cluster | [`05-terraform-infrastructure.png`](./screenshots/05-terraform-infrastructure.png) |
+| 6 | **DevSecOps CI/CD** | PyTest (11 passed), Vite build, Trivy CVE scan (0 High/Critical), GHCR SHA push | [`06-devsecops-pipeline.png`](./screenshots/06-devsecops-pipeline.png) |
+| 7 | **Monitoring & Metrics** | FastAPI `/metrics` scraping, latency histogram, ServiceMonitor | [`07-monitoring-observability.png`](./screenshots/07-monitoring-observability.png) |
+| 8 | **GitOps (ArgoCD)** | Continuous Git reconciliation, Target HEAD, Sync: Synced, Health: Healthy | [`08-gitops-argocd.png`](./screenshots/08-gitops-argocd.png) |
+| 9 | **Troubleshooting Lab #1** | RCA & remediation for `ImagePullBackOff` due to invalid image tag | [`09-troubleshooting-imagepullbackoff.png`](./screenshots/09-troubleshooting-imagepullbackoff.png) |
+| 10 | **Troubleshooting Lab #2** | RCA & remediation for `CrashLoopBackOff` due to probe port mismatch | [`10-troubleshooting-livenessprobe.png`](./screenshots/10-troubleshooting-livenessprobe.png) |
+| 11 | **Troubleshooting Lab #3** | RCA & remediation for Empty Endpoints `<none>` due to label selector mismatch | [`11-troubleshooting-selector-endpoints.png`](./screenshots/11-troubleshooting-selector-endpoints.png) |
+
+---
+
+## 💯 13. Grading Rubric Self-Assessment (100 / 100 Points)
 
 | Module | Requirement | Points | Status |
 |---|---|---|---|
